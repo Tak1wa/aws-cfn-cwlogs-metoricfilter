@@ -1,0 +1,18 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: ---
+Parameters: 
+  LogGroupName:
+    Type: String
+  MetricNamespace:
+    Type: String
+    Default: custom/managedworkflow/namespace
+Resources: 
+  ManagedWorkflowThrottledMetricFilter:
+    Type: AWS::Logs::MetricFilter
+    Properties:
+      FilterPattern: "{ $.type = \"ExecutionThrottled\" }"
+      LogGroupName: !Ref LogGroupName
+      MetricTransformations:
+        - MetricValue: "1"
+          MetricNamespace: !Ref MetricNamespace
+          MetricName: ExecutionThrottledCount
